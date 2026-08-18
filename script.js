@@ -216,13 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem(PANIER_KEY, JSON.stringify(panier));
     updateCartBadge();
   }
-  function ajouterAuPanier(produitNom, variante) {
+  function ajouterAuPanier(produitNom, variante, gi, vi) {
     const panier = getPanier();
-    const existant = panier.find(l => l.produit === produitNom && l.variante === variante.label);
+    const existant = panier.find(l => l.gi === gi && l.vi === vi);
     if (existant) {
       existant.qty += 1;
     } else {
-      panier.push({ produit: produitNom, variante: variante.label, prix: variante.prix, qty: 1 });
+      panier.push({ gi, vi, produit: produitNom, variante: variante.label, prix: variante.prix, qty: 1 });
     }
     setPanier(panier);
     ouvrirPanier();
@@ -339,15 +339,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     panel.querySelectorAll('[data-close-cart]').forEach(el => el.addEventListener('click', fermerPanier));
 
-    document.getElementById('cartCheckout').addEventListener('click', (e) => {
+    document.getElementById('cartCheckout').addEventListener('click', async (e) => {
       e.preventDefault();
       const panier = getPanier();
       if (!panier.length) return;
-      const lignes = panier.map(l => `- ${l.produit} (${l.variante}) x${l.qty} — ${formatPrix(l.prix * l.qty)}`).join('\n');
-      const total = formatPrix(totalPanier());
-      const sujet = 'Commande via le site — Ath Nutrition';
-      const corps = `Bonjour Adeline,\n\nJe souhaite commander :\n${lignes}\n\nTotal : ${total}\n\nMerci de me recontacter pour finaliser.`;
-      window.location.href = `mailto:commerconadeline@gmail.com?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}`;
+
+      const btn = e.currentTarget;
+      const originalText = btn.textContent;
+      btn.textContent = 'Redirection vers le paiement…';
+      btn.style.pointerEvents = 'none';
+
+      try {
+        const res = await fetch('/.netlify/functions/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: panier.map(l => ({ gi: l.gi, vi: l.vi, qty: l.qty }))
+          })
+        });
+        const data = await res.json();
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          throw new Error(data.error || 'Erreur inconnue');
+        }
+      } catch (err) {
+        btn.textContent = originalText;
+        btn.style.pointerEvents = '';
+        alert("Impossible de lancer le paiement pour le moment. Réessayez dans un instant ou contactez Adeline directement.");
+        console.error(err);
+      }
     });
 
     updateCartBadge();
@@ -384,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const select = document.querySelector(`select[data-group="${gi}"]`);
         const vi = parseInt(select.value, 10);
         const groupe = PRODUITS_GROUPES[gi];
-        ajouterAuPanier(groupe.nom, groupe.variantes[vi]);
+        ajouterAuPanier(groupe.nom, groupe.variantes[vi], gi, vi);
       });
     });
   }
