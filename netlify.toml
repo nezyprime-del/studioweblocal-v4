@@ -4,6 +4,7 @@
 
 [build.environment]
   SECRETS_SCAN_OMIT_KEYS = "EMAILJS_PUBLIC_KEY,EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID"
+  SECRETS_SCAN_OMIT_PATHS = "netlify/functions/stripe-webhook.js"
 
 [functions]
   node_bundler = "esbuild"
