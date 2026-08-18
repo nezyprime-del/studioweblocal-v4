@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalogue produits — Ath Nutrition</title>
+<meta name="description" content="Catalogue des produits Ath Nutrition — nutrition sélectionnée par Adeline, distributrice indépendante Herbalife à Besançon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png">
+</head>
+<body>
+
+<div class="bg-ambient" aria-hidden="true">
+  <span class="bg-blob bg-blob--1"></span>
+  <span class="bg-blob bg-blob--2"></span>
+  <span class="bg-blob bg-blob--3"></span>
+  <span class="bg-blob bg-blob--4"></span>
+</div>
+
+<header class="site-header" id="top">
+  <div class="wrap header__inner">
+    <a href="index.html" class="logo">
+      <svg class="logo__mark" viewBox="0 0 120 120" aria-hidden="true">
+        <path d="M28 96 L60 24 L92 96" fill="none" stroke="#1B7A5A" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M60 55 C 73 60, 75 79, 60 93 C 45 79, 47 60, 60 55 Z" fill="#FF6F52"/>
+      </svg>
+      <span class="logo__word">Ath Nutrition</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav" id="nav">
+      <a href="index.html#apropos">À propos</a>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="index.html#contact" class="nav__cta">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="legal wrap reveal" style="max-width:1120px;">
+    <h1>Catalogue produits</h1>
+    <p class="legal__updated">Sélection Herbalife — prix et commande sur demande auprès d'Adeline</p>
+
+    <div class="produits__grid" id="catalogueGrid"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer__inner">
+    <p>Ath Nutrition — Besançon (25)</p>
+    <nav class="footer__legal">
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="cgv.html">CGV</a>
+      <a href="confidentialite.html">Confidentialité</a>
+    </nav>
+    <p>© <span id="year"></span> Ath Nutrition</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
